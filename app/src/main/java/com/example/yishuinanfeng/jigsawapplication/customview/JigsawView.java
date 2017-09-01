@@ -116,7 +116,7 @@ public class JigsawView extends View {
     private void init() {
         //关闭硬件加速
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-
+        setBackgroundColor(Color.WHITE);
         selectPaint.setColor(Color.RED);
         selectPaint.setStyle(Paint.Style.STROKE);
         selectPaint.setStrokeWidth(6);
@@ -627,40 +627,8 @@ public class JigsawView extends View {
 
             //  canvas.drawBitmap();
         }
-
         return bitmaps;
     }
-
-    /**
-     * 使图片尺寸居中填充镂空部分对应的矩形
-     */
-//    private void makePicFillHollow() {
-//        for (PictureModel pictureModel : mPictureModels) {
-//            HollowModel hollow = pictureModel.getHollowModel();
-//            Bitmap bitmapPicture = pictureModel.getBitmapPicture();
-//
-//            int hollowX = hollow.getHollowX();
-//            int hollowY = hollow.getHollowY();
-//            int hollowWidth = hollow.getWidth();
-//            int hollowHeight = hollow.getHeight();
-//            int hollowCenterX = hollowX + hollowWidth / 2;
-//            int hollowCenterY = hollowY + hollowHeight / 2;
-//
-//            int pictureWidth = bitmapPicture.getWidth();
-//            int pictureHeight = bitmapPicture.getHeight();
-//
-//            float scaleX = hollowWidth / (float) pictureWidth;
-//            float scaleY = hollowHeight / (float) pictureHeight;
-//            //取大者
-//            float scale = (scaleX > scaleY) ? scaleX : scaleY;
-//
-//            pictureModel.setScale(scale);
-//            //图片位置由镂空部分位置决定
-//            pictureModel.setPictureX(hollowCenterX - pictureWidth / 2);
-//            pictureModel.setPictureY(hollowCenterY - pictureHeight / 2);
-//
-//        }
-//    }
 
 
     /**

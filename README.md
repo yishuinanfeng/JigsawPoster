@@ -8,7 +8,7 @@ It consisits of a background Image and several picture which can be moved,scaled
 
 we can select one of the picture that can be manipulated,then a menu will show from the bottom of the screen which has three buttons.two of them in the left can rotate 90 degrees and overturn the selected picture respectively,the rightmost can save the whole view as a image in root directory of the phone.All hollows is provided by svg files in the root directory of the phone,and have to be parsed by svg parser  which is in the application.
 
-For this is just a sample,so the paths of the files of all the pictures,background image,svg,destination of saving result image are hard coding,you has better make it flexibly configured in practice.
+For this is just a sample,so the paths of the files of all the pictures,background images,svgs,destinations of saving result image are hard coding,you had better make it flexibly configured in practice.
 
 
 

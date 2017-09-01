@@ -23,7 +23,6 @@ import com.example.yishuinanfeng.jigsawapplication.model.PictureModel;
 import java.util.ArrayList;
 
 
-
 /**
  * Created by Hendricks on 2017/6/8.
  * 多个操作拼图处理的自定义View
@@ -69,7 +68,7 @@ public class JigsawView extends View {
 
     private PictureCancelSelectListener mPictureCancelSelectListner;
 
-    private boolean isNeddHighlight = true;
+    private boolean mIsNeedHighlight = true;
 
     private Runnable HighLightRunnable;
 
@@ -134,17 +133,13 @@ public class JigsawView extends View {
         };
     }
 
-    public void setNeddHighlight(boolean neddHighlight) {
-        isNeddHighlight = neddHighlight;
+    public void setNeedHighlight(boolean needHighlight) {
+        mIsNeedHighlight = needHighlight;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         if (mPictureModels != null && mPictureModels.size() > 0 && mBitmapBackGround != null) {
-            if (isNeddHighlight) {
-                postDelayed(HighLightRunnable, 500);
-                isNeddHighlight = false;
-            }
             //循环遍历画要处理的图片
             for (PictureModel pictureModel : mPictureModels) {
                 Bitmap bitmapPicture = pictureModel.getBitmapPicture();
@@ -165,8 +160,6 @@ public class JigsawView extends View {
                     drawPicture(canvas, bitmapPicture, pictureX, pictureY, scaleX, scaleY, rotateDelta, hollowModel, null);
                 }
             }
-
-
             //新建一个layer，新建的layer放置在canvas默认layer的上部，当我们执行了canvas.saveLayer()之后，我们所有的绘制操作都绘制到了我们新建的layer上，而不是canvas默认的layer。
             int layerId = canvas.saveLayer(0, 0, canvas.getWidth(), canvas.getHeight(), null, Canvas.ALL_SAVE_FLAG);
 
@@ -195,7 +188,7 @@ public class JigsawView extends View {
 
             //绘制选择图片高亮边框
             for (PictureModel pictureModel : mPictureModels) {
-                if (pictureModel.isSelect()) {
+                if (pictureModel.isSelect() && mIsNeedHighlight) {
                     canvas.drawRect(getSelectRect(pictureModel), selectPaint);
                 }
             }
@@ -529,19 +522,6 @@ public class JigsawView extends View {
     public void refreshView() {
         invalidate();
     }
-
-    /**
-     * 高亮所有拼图500ms
-     */
-    public void highLightAllJigsaw() {
-        for (PictureModel model : mPictureModels) {
-            model.setSelect(true);
-        }
-        //selectedRect = null;
-        invalidate();
-        postDelayed(HighLightRunnable, 500);
-    }
-
 
     /**
      * 设置选中图片的高亮边框

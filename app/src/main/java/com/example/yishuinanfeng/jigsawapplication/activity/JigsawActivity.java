@@ -90,9 +90,13 @@ public class JigsawActivity extends Activity {
         savePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                jigsawView.setNeedHighlight(false);
+                jigsawView.refreshView();
                 Bitmap bitmap = BitmapUtil.getBitmapFromView(jigsawView,jigsawView.getWidth(),jigsawView.getHeight());
                 if (BitmapUtil.saveBitmap(bitmap)){
                     Toast.makeText(JigsawActivity.this,"海报保存成功",Toast.LENGTH_SHORT).show();
+                }else {
+                    jigsawView.setNeedHighlight(true);
                 }
             }
         });

@@ -57,8 +57,6 @@ public class JigsawView extends View {
 
     private ArrayList<PictureModel> mPictureModels;
 
-    private Rect selectedRect;
-
     //触摸点对应的图片模型
     private PictureModel mPicModelTouch;
 
@@ -70,19 +68,12 @@ public class JigsawView extends View {
 
     private boolean mIsNeedHighlight = true;
 
-    private Runnable HighLightRunnable;
-
-
     public void setmPictureSelectListener(PictureSelectListener mPictureSelectListener) {
         this.mPictureSelectListener = mPictureSelectListener;
     }
 
     public void setmPictureNoSelectListener(PictureNoSelectListener mPictureNoSelectListener) {
         this.mPictureNoSelectListener = mPictureNoSelectListener;
-    }
-
-    public void setmPictureCancelSelectListner(PictureCancelSelectListener mPictureCancelSelectListner) {
-        this.mPictureCancelSelectListner = mPictureCancelSelectListner;
     }
 
     public JigsawView setmPictureModels(ArrayList<PictureModel> mPictureModels) {
@@ -120,17 +111,6 @@ public class JigsawView extends View {
         selectPaint.setColor(Color.RED);
         selectPaint.setStyle(Paint.Style.STROKE);
         selectPaint.setStrokeWidth(6);
-
-
-        HighLightRunnable = new Runnable() {
-            @Override
-            public void run() {
-                for (PictureModel model : mPictureModels) {
-                    model.setSelect(false);
-                    invalidate();
-                }
-            }
-        };
     }
 
     public void setNeedHighlight(boolean needHighlight) {
@@ -599,35 +579,6 @@ public class JigsawView extends View {
         Bitmap picture = mPictureModel.getBitmapPicture();
         return (tempY < hollowModel.getHollowY() + hollowModel.getHeight()) && (tempY + picture.getHeight() > hollowModel.getHollowY())
                 && (tempX < hollowModel.getHollowX() + hollowModel.getWidth()) && (tempX + picture.getWidth() > hollowModel.getHollowX());
-    }
-
-    //// TODO: 2017/6/14 根据图片以及操作生成的参数生成一张Bitmap，用于上传数据
-    public ArrayList<Bitmap> getResultBitmaps() {
-        ArrayList<Bitmap> bitmaps = new ArrayList<>();
-
-        for (PictureModel pictureModel : mPictureModels) {
-            Bitmap bitmap = Bitmap.createBitmap(pictureModel.getHollowModel().getWidth(), pictureModel.getHollowModel().getHeight()
-                    , Bitmap.Config.ARGB_8888);
-            Canvas canvas = new Canvas(bitmap);
-            //相对对于镂空矩形区域的坐标
-            int picRelativeX = pictureModel.getPictureX() - pictureModel.getHollowModel().getHollowX();
-            int picRelativeY = pictureModel.getPictureY() - pictureModel.getHollowModel().getHollowY();
-
-            int picCenterWidth = pictureModel.getBitmapPicture().getWidth() / 2;
-            int picCenterHeight = pictureModel.getBitmapPicture().getHeight() / 2;
-
-            Matrix matrix = new Matrix();
-            matrix.postTranslate(picRelativeX, picRelativeY);
-            matrix.postScale(pictureModel.getScaleX(), pictureModel.getScaleY(), picRelativeX + picCenterWidth, picRelativeY + picCenterHeight);
-            matrix.postRotate(pictureModel.getRotate(), picRelativeX + picCenterWidth, picRelativeY + picCenterHeight);
-
-            canvas.drawBitmap(pictureModel.getBitmapPicture(), matrix, null);
-
-            bitmaps.add(bitmap);
-
-            //  canvas.drawBitmap();
-        }
-        return bitmaps;
     }
 
 

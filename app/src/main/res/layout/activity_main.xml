@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    
+
+    <com.example.yishuinanfeng.jigsawapplication.customview.JigsawView
+        android:id="@+id/jigsawview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+    <!--<com.github.fwh007.jigsawview.StickerView
+        android:id="@+id/stickerview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>-->
+    
+    <LinearLayout
+        android:id="@+id/layout_bottom_edit"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:divider="?android:listDivider"
+        android:showDividers="middle"
+        android:background="#ffffff"
+        android:translationY="90dp">
+        
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="14sp"
+                android:textColor="#4d4b4b"
+                android:text="图片"/>
+
+            <ImageView
+                android:id="@+id/close_edit"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="14dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                android:layout_marginStart="14dp"
+                android:src="@drawable/circle_delete" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <TextView
+                android:id="@+id/txt_edit_rotate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="旋转"
+                android:textColor="#4d4b4b"
+                android:textSize="14sp"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+                android:id="@+id/txt_edit_overturn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="30dp"
+                android:text="翻转"
+                android:textColor="#4d4b4b"
+                android:textSize="14sp"
+                android:layout_toLeftOf="@+id/txt_edit_rotate"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/txt_edit_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="保存海报"
+                android:textColor="#4d4b4b"
+                android:textSize="14sp"
+                android:layout_toRightOf="@+id/txt_edit_rotate"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>

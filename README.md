@@ -1,14 +1,14 @@
 # JigsawPoster
 It is a sample whose performance looks similar to PosterLabs app.
 
-It consisits of a background Image and several picture which can be moved,scaled,rotated by touch of finger,and corresponding hollow for each picture,the gif below shows what the sample looks like:
+It consisits of a background Image and several pictures which can be moved,scaled,rotated by touch of finger,and corresponding hollow for each picture,the gif below shows how the sample performs:
 
 ![image](https://github.com/yanyinan/JigsawPoster/blob/master/%E5%BD%95%E5%B1%8F%E4%B8%93%E5%AE%B6170901115542~4.gif)
 
 
-we can select one of the picture that can be manipulated,then a menu will show from the bottom of the screen which has three buttons.two of them in the left can rotate 90 degrees and overturn the selected picture respectively,the rightmost can save the whole view as a image in root directory of the phone.All hollows is provided by svg files in the root directory of the phone,and have to be parsed by svg parser  which is in the application.
+we can select one of the picture that can be manipulated,then a menu will show from the bottom of the screen which has three buttons.Two of them in the left can rotate the selected picture 90 degrees and overturn the selected picture respectively,the rightmost can save the whole view as a PNG in the root directory of the phone.All hollows is provided by svg files in the root directory of the phone,and have to be parsed by svg parser which is in the application.
 
-For this is just a sample,so the paths of the files of all the pictures,background images,svgs,destinations of saving result image are hard coding,you had better make it flexibly configured in practice.
+For this is just a sample,so the paths of the files of all the pictures,background images,svgs,destinations of save result of image are hard coding,you had better make it flexibly configured in practice.
 
 
 

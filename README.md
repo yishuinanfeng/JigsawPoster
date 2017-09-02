@@ -14,6 +14,15 @@ For this is just a sample,so the paths of the files of all the pictures,backgrou
 
 
 
+
+
+
+
+
+
+
+
+
 一个效果类似海报工厂的安卓demo。
 
 由一张背景图片，若干张可通过手势进行拖拽、缩放、旋转操作的图片，以及对应的镂空部分组成，可操作的图片只能在镂空部分中显示，效果图如下：

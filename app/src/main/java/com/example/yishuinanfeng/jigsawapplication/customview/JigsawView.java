@@ -25,14 +25,14 @@ import java.util.ArrayList;
 
 /**
  * Created by Hendricks on 2017/6/8.
- * 多个操作拼图处理的自定义View
+ * 操作多个拼图处理的自定义View
  */
 
 public class JigsawView extends View {
     //绘制图片的画笔
     Paint mMaimPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     //绘制高亮边框的画笔
-    Paint selectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    Paint mSelectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     PorterDuffXfermode mPorterDuffXfermodeClear = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
 
@@ -62,8 +62,6 @@ public class JigsawView extends View {
 
     private PictureSelectListener mPictureSelectListener;
     private PictureNoSelectListener mPictureNoSelectListener;
-
-
     private PictureCancelSelectListener mPictureCancelSelectListner;
 
     private boolean mIsNeedHighlight = true;
@@ -108,9 +106,9 @@ public class JigsawView extends View {
         //关闭硬件加速
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         setBackgroundColor(Color.WHITE);
-        selectPaint.setColor(Color.RED);
-        selectPaint.setStyle(Paint.Style.STROKE);
-        selectPaint.setStrokeWidth(6);
+        mSelectPaint.setColor(Color.RED);
+        mSelectPaint.setStyle(Paint.Style.STROKE);
+        mSelectPaint.setStrokeWidth(6);
     }
 
     public void setNeedHighlight(boolean needHighlight) {
@@ -169,7 +167,7 @@ public class JigsawView extends View {
             //绘制选择图片高亮边框
             for (PictureModel pictureModel : mPictureModels) {
                 if (pictureModel.isSelect() && mIsNeedHighlight) {
-                    canvas.drawRect(getSelectRect(pictureModel), selectPaint);
+                    canvas.drawRect(getSelectRect(pictureModel), mSelectPaint);
                 }
             }
         }
@@ -208,7 +206,7 @@ public class JigsawView extends View {
                 resultHeight = mBitmapBackGround.getHeight() < specHeightSize ? mBitmapBackGround.getHeight() : specHeightSize;
                 break;
         }
-
+        //如果是wrap_content,就让View的大小和背景图一样
         setMeasuredDimension(resultWidth, resultHeight);
     }
 

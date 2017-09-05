@@ -121,6 +121,13 @@ public class JigsawActivity extends Activity {
                 closePicEditBar();
             }
         });
+
+        jigsawView.setPictureCancelSelectListner(new JigsawView.PictureCancelSelectListener() {
+            @Override
+            public void onPictureCancelSelect() {
+                closePicEditBar();
+            }
+        });
     }
 
     private void showPicEditBar(PictureModel pictureModel) {

@@ -62,9 +62,14 @@ public class JigsawView extends View {
 
     private PictureSelectListener mPictureSelectListener;
     private PictureNoSelectListener mPictureNoSelectListener;
+
     private PictureCancelSelectListener mPictureCancelSelectListner;
 
     private boolean mIsNeedHighlight = true;
+
+    public void setPictureCancelSelectListner(PictureCancelSelectListener pictureCancelSelectListner) {
+        mPictureCancelSelectListner = pictureCancelSelectListner;
+    }
 
     public void setmPictureSelectListener(PictureSelectListener mPictureSelectListener) {
         this.mPictureSelectListener = mPictureSelectListener;
@@ -285,6 +290,7 @@ public class JigsawView extends View {
         if (path != null) {
             canvas.save();
             canvas.translate(hollowX, hollowY);
+            //缩放镂空部分大小
             scalePathRegion(canvas, hollowWidth, hollowHeight, path);
             canvas.drawPath(path, mMaimPaint);
             canvas.restore();
@@ -400,7 +406,9 @@ public class JigsawView extends View {
                     //双指模式
                     case 2:
                         if (mPicModelTouch != null) {
+                            //算出两根手指的距离
                             double fingerDistance = distanceBetweenFingers(event);
+                            //当前的旋转角度
                             double currentDegree = rotation(event);
                             //当前手指距离和上一次的手指距离的比即为图片缩放比
                             float scaleRatioDelta = (float) (fingerDistance / mLastFingerDistance);

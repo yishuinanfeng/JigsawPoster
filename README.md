@@ -11,7 +11,7 @@ we can select one of the picture that can be manipulated,then a menu will show f
 For this is just a sample,so the paths of the files of all the pictures,background images,svgs,destinations of save result of image are hard coding,you had better make it flexibly configured in practice.
 
 
-
+Tips：Don't forget to add corresponding svg file in the root of your phone,since the appliction will show a hollow as a common rectangle if it is not able to read corresponding svg file. 
 
 
 
@@ -33,3 +33,5 @@ For this is just a sample,so the paths of the files of all the pictures,backgrou
 镂空部分需要提供svg文件在手机根路径并通过项目中的svg解析器解析出来。
 
 因为只是一个demo，所以图片、底图、镂空svg文件和保存海报路径均为写死，实际使用应改为可灵活配置。
+
+友情提示：不要忘记添加对应的svg文件到手机sd卡根目录中，因为在读取不到对应的svg文件的情况下只会显示一个矩形区域。

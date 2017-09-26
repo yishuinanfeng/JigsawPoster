@@ -36,7 +36,6 @@ public class SvgParseUtil {
     public static ArrayList<Path> createPathFromSvgMask(String filePath) {
         ArrayList<Path> pathList = new ArrayList<>();
         try {
-
             FileInputStream inStream = new FileInputStream(filePath);
             XmlPullParser parser = Xml.newPullParser();
             parser.setInput(inStream, "UTF-8");// 设置数据源编码

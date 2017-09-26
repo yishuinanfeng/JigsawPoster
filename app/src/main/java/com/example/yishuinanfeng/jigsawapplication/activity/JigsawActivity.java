@@ -29,21 +29,20 @@ import java.util.List;
  */
 
 public class JigsawActivity extends Activity {
-    private ArrayList<PictureModel> pictureModelList = new ArrayList<>();
-    private JigsawView jigsawView;
+    private ArrayList<PictureModel> mPictureModelList = new ArrayList<>();
+    private JigsawView mJigsawView;
 
-    private LinearLayout editPicBottomBar;
-    private ImageView closePicBottomBar;
+    private LinearLayout mEditPicBottomBar;
+    private ImageView mClosePicBottomBar;
 
-    private TextView rotatePicture;
-    private TextView overturnPicture;
+    private TextView mRotatePicture;
+    private TextView mOverturnPicture;
 
     //被选择的拼图
-    private PictureModel selectPictureModel;
+    private PictureModel mSelectPictureModel;
 
-    private FrameLayout rootLayout;
 
-    private TextView savePicture;
+    private TextView mSavePicture;
 
 
     @Override
@@ -55,74 +54,72 @@ public class JigsawActivity extends Activity {
     }
 
     private void setUpView() {
-        jigsawView = (JigsawView) findViewById(R.id.jigsawview);
+        mJigsawView = (JigsawView) findViewById(R.id.jigsawview);
 
-        editPicBottomBar = (LinearLayout) findViewById(R.id.layout_bottom_edit);
-        closePicBottomBar = (ImageView) findViewById(R.id.close_edit);
+        mEditPicBottomBar = (LinearLayout) findViewById(R.id.layout_bottom_edit);
+        mClosePicBottomBar = (ImageView) findViewById(R.id.close_edit);
 
-        rotatePicture = (TextView) findViewById(R.id.txt_edit_rotate);
-        overturnPicture = (TextView) findViewById(R.id.txt_edit_overturn);
-        savePicture = (TextView) findViewById(R.id.txt_edit_save);
+        mRotatePicture = (TextView) findViewById(R.id.txt_edit_rotate);
+        mOverturnPicture = (TextView) findViewById(R.id.txt_edit_overturn);
+        mSavePicture = (TextView) findViewById(R.id.txt_edit_save);
 
-        rootLayout = (FrameLayout) findViewById(R.id.layout_root);
-
-        rotatePicture.setOnClickListener(new View.OnClickListener() {
+        mRotatePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectPictureModel != null){
-                    selectPictureModel.setRotate(selectPictureModel.getRotate() + 90);
-                    jigsawView.refreshView();
+                if (mSelectPictureModel != null){
+                    mSelectPictureModel.setRotate(mSelectPictureModel.getRotate() + 90);
+                    mJigsawView.refreshView();
                 }
             }
         });
 
-        overturnPicture.setOnClickListener(new View.OnClickListener() {
+        mOverturnPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (selectPictureModel != null){
-                    selectPictureModel.setScaleX(-selectPictureModel.getScaleX());
-                    jigsawView.refreshView();
+                if (mSelectPictureModel != null){
+                    mSelectPictureModel.setScaleX(-mSelectPictureModel.getScaleX());
+                    mJigsawView.refreshView();
                 }
             }
         });
 
 
-        savePicture.setOnClickListener(new View.OnClickListener() {
+        mSavePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jigsawView.setNeedHighlight(false);
-                jigsawView.refreshView();
-                Bitmap bitmap = BitmapUtil.getBitmapFromView(jigsawView,jigsawView.getWidth(),jigsawView.getHeight());
+                mJigsawView.setNeedHighlight(false);
+                mJigsawView.refreshView();
+                Bitmap bitmap = BitmapUtil.getBitmapFromView(mJigsawView, mJigsawView.getWidth(), mJigsawView.getHeight());
                 if (BitmapUtil.saveBitmap(bitmap)){
                     Toast.makeText(JigsawActivity.this,"海报保存成功",Toast.LENGTH_SHORT).show();
                 }else {
-                    jigsawView.setNeedHighlight(true);
+                    mJigsawView.setNeedHighlight(true);
                 }
             }
         });
 
-        closePicBottomBar.setOnClickListener(new View.OnClickListener() {
+        mClosePicBottomBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 closePicEditBar();
             }
         });
 
-        jigsawView.setmPictureSelectListener(new JigsawView.PictureSelectListener() {
+        mJigsawView.setPictureSelectListener(new JigsawView.PictureSelectListener() {
             @Override
             public void onPictureSelect(PictureModel pictureModel) {
                 showPicEditBar(pictureModel);
             }
         });
 
-        jigsawView.setmPictureNoSelectListener(new JigsawView.PictureNoSelectListener() {
+        mJigsawView.setPictureNoSelectListener(new JigsawView.PictureNoSelectListener() {
             @Override
             public void onPictureNoSelect() {
                 closePicEditBar();
             }
         });
 
-        jigsawView.setPictureCancelSelectListner(new JigsawView.PictureCancelSelectListener() {
+        mJigsawView.setPictureCancelSelectListener(new JigsawView.PictureCancelSelectListener() {
             @Override
             public void onPictureCancelSelect() {
                 closePicEditBar();
@@ -131,15 +128,15 @@ public class JigsawActivity extends Activity {
     }
 
     private void showPicEditBar(PictureModel pictureModel) {
-        selectPictureModel = pictureModel;
-        ObjectAnimator.ofFloat(editPicBottomBar,"translationY",
+        mSelectPictureModel = pictureModel;
+        ObjectAnimator.ofFloat(mEditPicBottomBar,"translationY",
                 0).setDuration(200).start();
     }
 
     private void closePicEditBar(){
-        if (editPicBottomBar.getTranslationY() == 0){
-            ObjectAnimator.ofFloat(editPicBottomBar,"translationY",
-                    0,editPicBottomBar.getHeight()).setDuration(200).start();
+        if (mEditPicBottomBar.getTranslationY() == 0){
+            ObjectAnimator.ofFloat(mEditPicBottomBar,"translationY",
+                    0, mEditPicBottomBar.getHeight()).setDuration(200).start();
         }
     }
 
@@ -188,10 +185,10 @@ public class JigsawActivity extends Activity {
         hollowModel3.setWidth(400);
         pictureModel3.setHollowModel(hollowModel3);
 
-        pictureModelList.add(pictureModel);
-        pictureModelList.add(pictureModel2);
-        pictureModelList.add(pictureModel3);
+        mPictureModelList.add(pictureModel);
+        mPictureModelList.add(pictureModel2);
+        mPictureModelList.add(pictureModel3);
 
-        jigsawView.setmBitmapBackGround(mBitmapBackGround).setmPictureModels(pictureModelList);
+        mJigsawView.setBitmapBackGround(mBitmapBackGround).setPictureModels(mPictureModelList);
     }
 }

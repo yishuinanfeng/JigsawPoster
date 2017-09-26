@@ -11,6 +11,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -29,31 +31,32 @@ import java.util.ArrayList;
  */
 
 public class JigsawView extends View {
+    private static String KEY_SUPER = "key_super";
+    private static String KEY_PICTURE_MODELS = "key_picture_models";
     //绘制图片的画笔
-    Paint mMaimPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mMaimPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     //绘制高亮边框的画笔
-    Paint mSelectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mSelectPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    PorterDuffXfermode mPorterDuffXfermodeClear = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
+    private PorterDuffXfermode mPorterDuffXfermodeClear = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
 
-    Bitmap mBitmapBackGround;
+    private Bitmap mBitmapBackGround;
 
-    Matrix mMatrix = new Matrix();
+    private Matrix mMatrix = new Matrix();
 
-    float mLastX;
-    float mLastY;
+    private float mLastX;
+    private float mLastY;
 
-    float mDownX;
-    float mDownY;
+    private float mDownX;
+    private float mDownY;
 
 
-    double mLastFingerDistance;
-    double mLastDegree;
+    private double mLastFingerDistance;
+    private double mLastDegree;
 
     private boolean mIsDoubleFinger;
 
-    Path mPath = new Path();
-
+    private Path mPath = new Path();
 
     private ArrayList<PictureModel> mPictureModels;
 
@@ -63,30 +66,51 @@ public class JigsawView extends View {
     private PictureSelectListener mPictureSelectListener;
     private PictureNoSelectListener mPictureNoSelectListener;
 
-    private PictureCancelSelectListener mPictureCancelSelectListner;
+    private PictureCancelSelectListener mPictureCancelSelectListener;
 
     private boolean mIsNeedHighlight = true;
 
-    public void setPictureCancelSelectListner(PictureCancelSelectListener pictureCancelSelectListner) {
-        mPictureCancelSelectListner = pictureCancelSelectListner;
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(KEY_SUPER,super.onSaveInstanceState());
+        bundle.putSerializable(KEY_PICTURE_MODELS,mPictureModels);
+        return bundle;
     }
 
-    public void setmPictureSelectListener(PictureSelectListener mPictureSelectListener) {
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        if (state instanceof Bundle){
+            Bundle bundle = (Bundle) state;
+            if (bundle.getSerializable(KEY_PICTURE_MODELS) instanceof ArrayList){
+                mPictureModels = (ArrayList<PictureModel>) bundle.getSerializable(KEY_PICTURE_MODELS);
+            }
+            super.onRestoreInstanceState((bundle).getParcelable(KEY_SUPER));
+            return;
+        }
+        super.onRestoreInstanceState(state);
+    }
+
+    public void setPictureCancelSelectListener(PictureCancelSelectListener pictureCancelSelectListner) {
+        mPictureCancelSelectListener = pictureCancelSelectListner;
+    }
+
+    public void setPictureSelectListener(PictureSelectListener mPictureSelectListener) {
         this.mPictureSelectListener = mPictureSelectListener;
     }
 
-    public void setmPictureNoSelectListener(PictureNoSelectListener mPictureNoSelectListener) {
+    public void setPictureNoSelectListener(PictureNoSelectListener mPictureNoSelectListener) {
         this.mPictureNoSelectListener = mPictureNoSelectListener;
     }
 
-    public JigsawView setmPictureModels(ArrayList<PictureModel> mPictureModels) {
+    public JigsawView setPictureModels(ArrayList<PictureModel> mPictureModels) {
         this.mPictureModels = mPictureModels;
         makePicFillHollow();
         return this;
     }
 
 
-    public JigsawView setmBitmapBackGround(Bitmap mBitmapBackGround) {
+    public JigsawView setBitmapBackGround(Bitmap mBitmapBackGround) {
         this.mBitmapBackGround = mBitmapBackGround;
         return this;
     }
@@ -222,16 +246,6 @@ public class JigsawView extends View {
 
     /**
      * 画需要处理的图片
-     *
-     * @param canvas
-     * @param bitmapPicture
-     * @param coordinateX
-     * @param coordinateY
-     * @param scaleX
-     * @param
-     * @param rotateDelta
-     * @param hollowModel
-     * @param path
      */
     private void drawPicture(Canvas canvas, Bitmap bitmapPicture, int coordinateX, int coordinateY, float scaleX, float scaleY, float rotateDelta
             , HollowModel hollowModel, Path path) {
@@ -276,13 +290,6 @@ public class JigsawView extends View {
 
     /**
      * 画底图和镂空部分
-     *
-     * @param canvas
-     * @param hollowX
-     * @param hollowY
-     * @param hollowWidth
-     * @param hollowHeight
-     * @param
      */
     private void drawHollow(Canvas canvas, int hollowX, int hollowY, int hollowWidth, int hollowHeight, Path path) {
         mMaimPaint.setXfermode(mPorterDuffXfermodeClear);
@@ -308,10 +315,7 @@ public class JigsawView extends View {
     /**
      * 缩放镂空部分大小
      *
-     * @param canvas
-     * @param hollowWidth
-     * @param hollowHeight
-     * @param path
+     *
      */
     private void scalePathRegion(Canvas canvas, int hollowWidth, int hollowHeight, Path path) {
         //使得不规则的镂空图形填充指定的Rect区域
@@ -337,18 +341,18 @@ public class JigsawView extends View {
 
                 //双指模式
                 if (event.getPointerCount() == 2) {
+                    //mPicModelTouch为当前触摸到的操作图片模型
                     mPicModelTouch = getHandlePicModel(event);
                     if (mPicModelTouch != null) {
                         // mPicModelTouch.setSelect(true);
+                        //重置图片的选中状态
                         resetNoTouchPicsState();
-
-
                         mPicModelTouch.setSelect(true);
-
+                        //两手指的距离
                         mLastFingerDistance = distanceBetweenFingers(event);
+                        //两手指间的角度
                         mLastDegree = rotation(event);
                         mIsDoubleFinger = true;
-
                         invalidate();
                     }
                 }
@@ -356,51 +360,45 @@ public class JigsawView extends View {
 
             //单指模式
             case MotionEvent.ACTION_DOWN:
-
+                //记录上一次事件的位置
                 mLastX = event.getX();
                 mLastY = event.getY();
-
+                //记录Down事件的位置
                 mDownX = event.getX();
                 mDownY = event.getY();
-
+                //获取被点击的图片模型
                 mPicModelTouch = getHandlePicModel(event);
                 if (mPicModelTouch != null) {
-
                     //每次down重置其他picture选中状态
                     resetNoTouchPicsState();
                     mPicModelTouch.setSelect(true);
-
                     invalidate();
                 }
-
-                // getSelectRect();
                 break;
-            //单双一起处理
             case MotionEvent.ACTION_MOVE:
                 switch (event.getPointerCount()) {
                     //单指模式
                     case 1:
                         if (!mIsDoubleFinger) {
                             if (mPicModelTouch != null) {
+                                //记录每次事件在x,y方向上移动
                                 int dx = (int) (event.getX() - mLastX);
                                 int dy = (int) (event.getY() - mLastY);
                                 int tempX = mPicModelTouch.getPictureX() + dx;
                                 int tempY = mPicModelTouch.getPictureY() + dy;
 
-
                                 if (checkPictureLocation(mPicModelTouch, tempX, tempY)) {
-
+                                    //检查到没有越出镂空部分才真正赋值给mPicModelTouch
                                     mPicModelTouch.setPictureX(tempX);
                                     mPicModelTouch.setPictureY(tempY);
-
+                                    //保存上一次的位置，以便下次事件算出相对位移
                                     mLastX = event.getX();
                                     mLastY = event.getY();
+                                    //修改了mPicModelTouch的位置后刷新View
                                     invalidate();
                                 }
                             }
-
                         }
-
                         break;
 
                     //双指模式
@@ -419,12 +417,16 @@ public class JigsawView extends View {
                             //对缩放比做限制
                             if (Math.abs(tempScaleX) < 3 && Math.abs(tempScaleX) > 0.3 &&
                                     Math.abs(tempScaleY) < 3 && Math.abs(tempScaleY) > 0.3) {
+                                //没有超出缩放比才真正赋值给模型
                                 mPicModelTouch.setScaleX(tempScaleX);
                                 mPicModelTouch.setScaleY(tempScaleY);
                                 mPicModelTouch.setRotate(mPicModelTouch.getRotate() + rotateDelta);
+                                //修改模型之后，刷新View
                                 invalidate();
+                                //记录上一次的两手指距离以便下次计算出相对的位置以算出缩放系数
                                 mLastFingerDistance = fingerDistance;
                             }
+                            //记录上次的角度以便下一个事件计算出角度变化值
                             mLastDegree = currentDegree;
                         }
                         break;
@@ -439,14 +441,13 @@ public class JigsawView extends View {
                 double distance = getDisBetweenPoints(event);
 
                 if (mPicModelTouch != null) {
-                    //是否属于滑动，非滑动则有选中状态
+                    //是否属于滑动，非滑动则改变选中状态
                     if (distance < ViewConfiguration.getTouchSlop()) {
-
                         if (mPicModelTouch.isLastSelect()) {
                             mPicModelTouch.setSelect(false);
                             mPicModelTouch.setLastSelect(false);
-                            if (mPictureCancelSelectListner != null) {
-                                mPictureCancelSelectListner.onPictureCancelSelect();
+                            if (mPictureCancelSelectListener != null) {
+                                mPictureCancelSelectListener.onPictureCancelSelect();
                             }
 
                         } else {
@@ -462,11 +463,11 @@ public class JigsawView extends View {
                         //滑动则取消所有选择的状态
                         mPicModelTouch.setSelect(false);
                         mPicModelTouch.setLastSelect(false);
+                        //取消状态之后刷新View
                         invalidate();
                     }
-
-
                 } else {
+                    //如果没有图片被选中，则取消所有图片的选中状态
                     for (PictureModel pictureModel : mPictureModels) {
                         pictureModel.setLastSelect(false);
                     }
@@ -474,14 +475,11 @@ public class JigsawView extends View {
                     if (mPictureNoSelectListener != null) {
                         mPictureNoSelectListener.onPictureNoSelect();
                     }
-
+                    //取消所有图片选中状态后刷新View
                     invalidate();
-                    //return false;//false是将事件交给父View
                 }
-
                 break;
-
-            //双指模式中其中一手指离开屏幕
+            //双指模式中其中一手指离开屏幕，取消当前被选中图片的选中状态
             case MotionEvent.ACTION_POINTER_UP:
                 if (mPicModelTouch != null) {
                     mPicModelTouch.setSelect(false);
@@ -525,8 +523,7 @@ public class JigsawView extends View {
     /**
      * 根据事件点击区域得到对应的PictureModel，如果没有点击到图片所在区域则返回null
      *
-     * @param event
-     * @return
+     *
      */
     private PictureModel getHandlePicModel(MotionEvent event) {
         switch (event.getPointerCount()) {
@@ -574,11 +571,6 @@ public class JigsawView extends View {
 
     /**
      * 检查图片范围是否超出窗口,此方法还要完善
-     *
-     * @param mPictureModel
-     * @param tempX
-     * @param tempY
-     * @return
      */
     private boolean checkPictureLocation(PictureModel mPictureModel, int tempX, int tempY) {
         HollowModel hollowModel = mPictureModel.getHollowModel();
